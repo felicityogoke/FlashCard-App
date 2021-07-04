@@ -18,8 +18,8 @@ class FirstPage(tk.Frame):
 
     def Widgets(self):
         self.DeckBtn = tk.Button(root, text='Go To Decks ➤', command=self.GoToDeckFunc,
-                                 font=('Comic Sans MS', 20, "bold"), bg='pink')
-        self.DeckBtn.grid(row=1, column=0, sticky='we', ipady=20,columnspan=2)
+                                 font=('Comic Sans MS', 18, "bold"), bg='pink')
+        self.DeckBtn.grid(row=1, column=0, sticky='we', ipady=15,columnspan=2)
 
     # function for going to deck page
     def GoToDeckFunc(self):
