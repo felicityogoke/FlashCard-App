@@ -54,7 +54,7 @@ class SecondPage(tk.Frame):
         self.scrollbar.grid(row=1, column=1, sticky='wns')
 
         # create an Add deck button
-        self.AddBtn = tk.Button(root, text='Add Deck', command=self.AddDeck, font=('Comic Sans MS', 12, "bold"),
+        self.AddBtn = tk.Button(root, text='Add Deck', command=self.AddDeck, font=('Comic Sans MS', 18, "bold"),
                                 bg='pink')
         self.AddBtn.grid(row=0, column=0, sticky='we', ipady=15,columnspan=2)
 
