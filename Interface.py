@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
-from tkinter.messagebox import showinfo
+import sqlite3
 
 root = tk.Tk()
 a = ("Comic Sans MS", 15, "bold")
@@ -10,6 +10,7 @@ root.geometry("800x600")
 root.resizable(False, False)
 img = ImageTk.PhotoImage(Image.open("books.jpg"))
 imagelabel = tk.Label(root, image=img).grid(row=0, column=0,columnspan=2,rowspan=4)
+
 
 # The HomePage
 class FirstPage(tk.Frame):
@@ -39,16 +40,32 @@ class SecondPage(tk.Frame):
     def Widgets(self):
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
+
+        conn = sqlite3.connect('DecksDB.db')
+        cursor = conn.cursor()
+
+        # CREATE A DECKTABLE;
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        decks = cursor.fetchall()
+
+        # ADDING SEARCHES TO A LIST;
+        self.deck_list = []
+        for deck in decks:
+            self.deck_list.append(str(deck[0]))
+        # CLOSE CONNECTION;
+        conn.commit()
+        conn.close()
+
+
+
         # create a list box
-        self.langs = ('deck1', 'deck2', 'deck3', 'deck4', 'deck5',
-                      'deck6', 'deck7', 'deck8', 'deck9')
+        self.list_var = tk.StringVar(value=self.deck_list)
 
-        self.langs_var = tk.StringVar(value=self.langs)
-
-        self.listbox = tk.Listbox(root, listvariable=self.langs_var, height=10, font=('Comic Sans MS', 18),
+        self.listbox = tk.Listbox(root, listvariable=self.list_var, height=10, font=('Comic Sans MS', 18),
                                   selectforeground='White', selectmode='extended', bg="pink")
         self.listbox.grid(row=1, column=0, sticky='nwes')
         self.listbox.bind('<<ListboxSelect>>', self.items_selected)
+
 
 
 
@@ -119,6 +136,8 @@ class ThirdPage(tk.Frame):
 
 
     def Submit_Deck(self):
+        self.deck = self.Name_entry.get()
+        self.Add_Search_to_database(self.deck)
         self.Name_Label.destroy()
         self.Name_entry.destroy()
         self.Submit.destroy()
@@ -131,6 +150,22 @@ class ThirdPage(tk.Frame):
         self.Submit.destroy()
         self.Cancel.destroy()
         SecondPage(root)
+
+    def Add_Search_to_database(self,Deck):
+        # CONNECT TO DATABASE;
+        conn = sqlite3.connect('DecksDB.db')
+        cursor = conn.cursor()
+
+        # CREATE A DECKTABLE;
+
+        cursor.execute(f"CREATE TABLE [{Deck}](Front NULL, Back NULL)")
+
+        # CLEAR SEARCH BOX TO ENTER A NEW SEARCH;
+        self.Name_entry.delete(0, tk.END)
+
+        # CLOSE CONNECTION;
+        conn.commit()
+        conn.close()
 
 class FourthPage(tk.Frame):
     def __init__(self, master):
