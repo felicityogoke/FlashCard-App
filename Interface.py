@@ -137,7 +137,7 @@ class ThirdPage(tk.Frame):
 
     def Submit_Deck(self):
         self.deck = self.Name_entry.get()
-        self.Add_Search_to_database(self.deck)
+        self.Add_Deck_to_database(self.deck)
         self.Name_Label.destroy()
         self.Name_entry.destroy()
         self.Submit.destroy()
@@ -151,7 +151,7 @@ class ThirdPage(tk.Frame):
         self.Cancel.destroy()
         SecondPage(root)
 
-    def Add_Search_to_database(self,Deck):
+    def Add_Deck_to_database(self,Deck):
         # CONNECT TO DATABASE;
         conn = sqlite3.connect('DecksDB.db')
         cursor = conn.cursor()
