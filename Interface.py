@@ -93,6 +93,7 @@ class SecondPage(tk.Frame):
         ThirdPage(root)
 
         # handle event
+
     def items_selected(self, event):
             # get selected indices
             self.selected_indices = self.listbox.curselection()
@@ -202,11 +203,11 @@ class FourthPage(tk.Frame):
         ThirdPage(root).Cancel_Func()
 
 
-
-
-
     def Play_Deck(self):
-        pass
+        self.EditBtn.destroy()
+        self.DeleteBtn.destroy()
+        self.PlayBtn.destroy()
+        SeventhPage(root,self.deck)
 
 
 class FifthPage(tk.Frame):
@@ -288,7 +289,7 @@ class SixthPage(tk.Frame):
 
         # CREATE A DECKTABLE;
 
-        cursor.execute("SELECT Front FROM "+ self.deck)
+        cursor.execute("SELECT Front FROM " + self.deck)
         cards = cursor.fetchall()
 
         # ADDING SEARCHES TO A LIST;
@@ -390,6 +391,41 @@ class SixthPage(tk.Frame):
         # CLOSE CONNECTION;
         conn.commit()
         conn.close()
+
+
+class SeventhPage(tk.Frame):
+    def __init__(self, master,deck=None):
+        super().__init__(master,deck=None)
+        self.deck = deck
+        self.Widgets()
+
+
+    def Widgets(self):
+        self.front = None
+        self.back = None
+        root.columnconfigure(0, weight=0)
+        root.rowconfigure(0, weight=0)
+
+        conn = sqlite3.connect('DecksDB.db')
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM " + self.deck)
+        self.cards = cursor.fetchall()
+
+        for card in self.cards:
+            self.front = card[0]
+            self.back = card[1]
+
+        # CLOSE CONNECTION;
+        conn.commit()
+        conn.close()
+
+
+        self.CardBtn = tk.Button(root, bg="pink", font=('Comic Sans MS', 18, "bold"), text= str(self.front),command= self.Next_Card)
+        self.CardBtn.grid(row=0, column=0, pady=25, sticky="ewsn", rowspan=2, columnspan=1)
+
+    def Next_Card(self):
+        self.CardBtn.config(text=self.back)
 
 
 
