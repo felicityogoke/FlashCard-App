@@ -421,10 +421,10 @@ class SeventhPage(tk.Frame):
         conn.close()
 
 
-        self.CardBtn = tk.Button(root, bg="pink", font=('Comic Sans MS', 18, "bold"), text= str(self.front),command= self.Next_Card)
+        self.CardBtn = tk.Button(root, bg="pink", font=('Comic Sans MS', 18, "bold"), text= str(self.front),command= self.Show_Back)
         self.CardBtn.grid(row=0, column=0, pady=25, sticky="ewsn", rowspan=2, columnspan=1)
 
-    def Next_Card(self):
+    def Show_Back(self):
         self.CardBtn.config(text=self.back)
 
 
